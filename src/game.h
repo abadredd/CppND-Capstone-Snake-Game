@@ -1,8 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-class Renderer; // Forward declaration of the Renderer class
-
 #include <random>
 #include "powerup.h"
 #include "SDL.h"

@@ -1,28 +1,11 @@
 #include "renderer.h"
-
 #include <iostream>
 #include <string>
 
-void Renderer::RenderPowerUp(const PowerUp& powerUp) {
-  // 1. Set the color for the power-up (e.g., yellow for speed boost)
-  SDL_SetRenderDrawColor(sdl_renderer, 255, 255, 0, 255); // Yellow
-
-  // 2. Create a rectangle representing the power-up's position and size
-  SDL_Rect block;
-  block.x = powerUp.position.x * screen_width / grid_width;
-  block.y = powerUp.position.y * screen_height / grid_height;
-  block.w = screen_width / grid_width;
-  block.h = screen_height / grid_height;
-
-  // 3. Render the power-up (you can use a filled rectangle or a more elaborate sprite)
-  SDL_RenderFillRect(sdl_renderer, &block);
-}
-
 Renderer::Renderer(const std::size_t screen_width,
                    const std::size_t screen_height,
-                   const std::size_t grid_width, const std::size_t grid_height, Game& game)
-      : game(game),  // Initialize the reference
-      screen_width(screen_width),
+                   const std::size_t grid_width, const std::size_t grid_height)
+    : screen_width(screen_width),
       screen_height(screen_height),
       grid_width(grid_width),
       grid_height(grid_height) {
@@ -87,11 +70,6 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
     SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
   }
   SDL_RenderFillRect(sdl_renderer, &block);
-  
-    // Render all active power-ups
-//   for (const auto& powerUp : game.GetActivePowerUps()) { // Use the getter
-//     RenderPowerUp(*powerUp);
-//   }
 
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
