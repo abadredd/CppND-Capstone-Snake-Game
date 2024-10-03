@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+class Renderer; // Forward declaration of the Renderer class
+
 #include <random>
 #include "powerup.h"
 #include "SDL.h"
@@ -29,7 +31,7 @@ class Game {
   std::vector<std::unique_ptr<PowerUp>> activePowerUps;
   const int POWERUP_SPAWN_CHANCE = 0.7; // 5% chance per frame
   const int POWERUP_SPAWN_INTERVAL = 5000; // 5 seconds in milliseconds
-  const int POWERUP_DURATION = 3000;      // 3 seconds in milliseconds
+  const int POWERUP_DURATION = 10000;      // 3 seconds in milliseconds
   Uint32 lastPowerUpSpawnTime = 0;
   
   std::random_device dev;

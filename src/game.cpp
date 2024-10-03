@@ -111,7 +111,7 @@ void Game::Update() {
   // Update power-up durations and remove expired ones
   for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
       if (currentTime - it->get()->GetSpawnTime() >= POWERUP_DURATION) { // Use the getter
-          DeactivatePowerUp(*it->get());
+//           DeactivatePowerUp(*it->get());
           std::cout << "Removing expired power-up!" << std::endl;
           it = activePowerUps.erase(it);
       } else {
@@ -144,7 +144,7 @@ void Game::Update() {
 }
 
 void Game::SpawnPowerUp() {
-    PowerUpType type = static_cast<PowerUpType>(rand() % 6); // Random type
+    PowerUpType type = static_cast<PowerUpType>(rand() % 3); // Random type
     int x, y;
     do {
         x = random_w(engine);
@@ -165,35 +165,34 @@ void Game::SpawnPowerUp() {
 void Game::ActivatePowerUp(const PowerUp& powerUp) {
     switch (powerUp.type) {
         case PowerUpType::SPEED_BOOST:
-            snake.speed *= 1.5; // Increase speed temporarily
+            snake.speed += 0.5; // Increase speed temporarily
+            std::cout << "Speed Boost activated!" << std::endl;
             break;
-        case PowerUpType::INVINCIBILITY:
-            // Implement invincibility logic (e.g., set a flag)
-            std::cout << "Invincibility deactivated!" << std::endl;
+        case PowerUpType::SLOW_DOWN:
+            snake.speed -= 0.5; // Decrease speed temporarily
+            std::cout << "Slow Down activated!" << std::endl;
             break;
         case PowerUpType::CONFUSION:
-            // Implement confusion logic (e.g., reverse controls)
-        	std::cout << "Confusion deactivated!" << std::endl;
-            break;
-        case PowerUpType::SHRINK:
-            // Implement shrink logic (e.g., remove tail segments)
-        	std::cout << "Shrink deactivated!" << std::endl;
-            break;
-        case PowerUpType::TELEPORT:
-            // Implement teleport logic
-        	std::cout << "Teleport deactivated!" << std::endl;
+            snake.isConfused = true; // Activate confusion
+            std::cout << "Confusion activated!" << std::endl;
             break;
     }
 }
 
 void Game::DeactivatePowerUp(const PowerUp& powerUp) {
-    std::cout << "deactivated!" << std::endl;
     switch (powerUp.type) {
         case PowerUpType::SPEED_BOOST:
-            snake.speed /= 1.5; // Reset speed
+            snake.speed -= 0.5; // Reset speed
             std::cout << "Speed Boost deactivated!" << std::endl;
             break;
-        // Add deactivation logic for other power-ups if needed
+        case PowerUpType::SLOW_DOWN:
+            snake.speed += 0.5; // Reset speed
+            std::cout << "Slow Down deactivated!" << std::endl;
+            break;
+        case PowerUpType::CONFUSION:
+            snake.isConfused = false; // Deactivate confusion
+            std::cout << "Confusion deactivated!" << std::endl;
+            break;
     }
 }
 

@@ -9,11 +9,8 @@
 // Enum to represent different power-up types
 enum class PowerUpType {
     SPEED_BOOST,
-    INVINCIBILITY,
-    SCORE_MULTIPLIER,
-    CONFUSION,
-    SHRINK,
-    TELEPORT
+    SLOW_DOWN, // Renamed from INVINCIBILITY
+    CONFUSION 
 };
 
 class PowerUp {

@@ -5,6 +5,23 @@
 
 void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
                                  Snake::Direction opposite) const {
+  if (snake.isConfused) { // If confusion is active, reverse the input
+    switch (input) {
+      case Snake::Direction::kUp:
+        input = Snake::Direction::kDown;
+        break;
+      case Snake::Direction::kDown:
+        input = Snake::Direction::kUp;
+        break;
+      case Snake::Direction::kLeft:
+        input = Snake::Direction::kRight;
+        break;
+      case Snake::Direction::kRight:
+        input = Snake::Direction::kLeft;
+        break;
+    }
+  }
+
   if (snake.direction != opposite || snake.size == 1) snake.direction = input;
   return;
 }

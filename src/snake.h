@@ -7,6 +7,8 @@
 class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
+  
+  bool isConfused = false;
 
   Snake(int grid_width, int grid_height)
       : grid_width(grid_width),
