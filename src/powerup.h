@@ -22,10 +22,16 @@ public:
     SDL_Point position;
     int duration; // in frames
 
-    PowerUp(PowerUpType type, int x, int y, int duration) 
-        : type(type), position({x, y}), duration(duration) {}
+    PowerUp(PowerUpType type, int x, int y, Uint32 spawnTime)
+        : type(type), position({x, y}), spawnTime(spawnTime) {}
 
-    // Add functions to activate the power-up's effect later
+    Uint32 GetSpawnTime() const { 
+        return spawnTime; 
+    }
+  
+private:
+    // ... other members
+    Uint32 spawnTime; // Store the time when the power-up was spawned
 };
 
 #endif

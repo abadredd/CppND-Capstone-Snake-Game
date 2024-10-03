@@ -27,7 +27,10 @@ class Game {
   
   // Ali Added
   std::vector<std::unique_ptr<PowerUp>> activePowerUps;
-  const int POWERUP_SPAWN_CHANCE = 5; // 5% chance per frame
+  const int POWERUP_SPAWN_CHANCE = 0.7; // 5% chance per frame
+  const int POWERUP_SPAWN_INTERVAL = 5000; // 5 seconds in milliseconds
+  const int POWERUP_DURATION = 3000;      // 3 seconds in milliseconds
+  Uint32 lastPowerUpSpawnTime = 0;
   
   std::random_device dev;
   std::mt19937 engine;

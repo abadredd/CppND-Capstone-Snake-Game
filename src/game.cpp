@@ -70,6 +70,8 @@ void Game::PlaceFood() {
 
 void Game::Update() {
   if (!snake.alive) return;
+  
+  Uint32 currentTime = SDL_GetTicks();
 
   snake.Update();
 
@@ -95,6 +97,10 @@ void Game::Update() {
   // Check for collision with power-ups
   for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
       if (it->get()->position.x == new_x && it->get()->position.y == new_y) {
+        
+        std::cout << "Power-up collision detected! Type: " << static_cast<int>(it->get()->type) 
+          << ", Position: (" << it->get()->position.x << ", " << it->get()->position.y << ")" << std::endl;
+
           ActivatePowerUp(*it->get()); 
           it = activePowerUps.erase(it); 
       } else {
@@ -104,9 +110,9 @@ void Game::Update() {
 
   // Update power-up durations and remove expired ones
   for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
-      it->get()->duration--;
-      if (it->get()->duration <= 0) {
-          DeactivatePowerUp(*it->get()); // If needed for certain power-ups
+      if (currentTime - it->get()->GetSpawnTime() >= POWERUP_DURATION) { // Use the getter
+          DeactivatePowerUp(*it->get());
+          std::cout << "Removing expired power-up!" << std::endl;
           it = activePowerUps.erase(it);
       } else {
           ++it;
@@ -122,11 +128,18 @@ void Game::Update() {
       }
   }
   */
+  
+
+  // Check if it's time to spawn a new power-up
+  if (currentTime - lastPowerUpSpawnTime >= POWERUP_SPAWN_INTERVAL) {
+      SpawnPowerUp();
+      lastPowerUpSpawnTime = currentTime; 
+  }
 
   // Try to spawn a new power-up randomly
-  if (rand() % 100 < POWERUP_SPAWN_CHANCE) {
-    SpawnPowerUp();
-  }
+//   if (rand() % 100 < POWERUP_SPAWN_CHANCE) {
+//     SpawnPowerUp();
+//   }
   
 }
 
@@ -140,9 +153,13 @@ void Game::SpawnPowerUp() {
                 (x == food.x && y == food.y) ||
                 PowerUpExistsAt(x, y));
 
-    int duration = rand() % 60 + 30; // Random duration between 30 and 90 frames
+//     int duration = rand() % 60 + 30; // Random duration between 30 and 90 frames
+    int duration = 100; // Random duration between 30 and 90 frames
 
-    activePowerUps.push_back(std::make_unique<PowerUp>(type, x, y, duration));
+    std::cout << "Power-up spawned! Type: " << static_cast<int>(type) 
+      << ", Position: (" << x << ", " << y << ")" << std::endl;
+  	
+  	activePowerUps.push_back(std::make_unique<PowerUp>(type, x, y, SDL_GetTicks())); // Store spawn time
 }
 
 void Game::ActivatePowerUp(const PowerUp& powerUp) {
@@ -152,23 +169,29 @@ void Game::ActivatePowerUp(const PowerUp& powerUp) {
             break;
         case PowerUpType::INVINCIBILITY:
             // Implement invincibility logic (e.g., set a flag)
+            std::cout << "Invincibility deactivated!" << std::endl;
             break;
         case PowerUpType::CONFUSION:
             // Implement confusion logic (e.g., reverse controls)
+        	std::cout << "Confusion deactivated!" << std::endl;
             break;
         case PowerUpType::SHRINK:
             // Implement shrink logic (e.g., remove tail segments)
+        	std::cout << "Shrink deactivated!" << std::endl;
             break;
         case PowerUpType::TELEPORT:
             // Implement teleport logic
+        	std::cout << "Teleport deactivated!" << std::endl;
             break;
     }
 }
 
 void Game::DeactivatePowerUp(const PowerUp& powerUp) {
+    std::cout << "deactivated!" << std::endl;
     switch (powerUp.type) {
         case PowerUpType::SPEED_BOOST:
             snake.speed /= 1.5; // Reset speed
+            std::cout << "Speed Boost deactivated!" << std::endl;
             break;
         // Add deactivation logic for other power-ups if needed
     }
