@@ -94,30 +94,30 @@ void Game::Update() {
     */
   }
 
-  // Check for collision with power-ups
-  for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
-      if (it->get()->position.x == new_x && it->get()->position.y == new_y) {
+//   // Check for collision with power-ups
+//   for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
+//       if (it->get()->position.x == new_x && it->get()->position.y == new_y) {
         
-        std::cout << "Power-up collision detected! Type: " << static_cast<int>(it->get()->type) 
-          << ", Position: (" << it->get()->position.x << ", " << it->get()->position.y << ")" << std::endl;
+//         std::cout << "Power-up collision detected! Type: " << static_cast<int>(it->get()->type) 
+//           << ", Position: (" << it->get()->position.x << ", " << it->get()->position.y << ")" << std::endl;
 
-          ActivatePowerUp(*it->get()); 
-          it = activePowerUps.erase(it); 
-      } else {
-          ++it;
-      }
-  }
+//           ActivatePowerUp(*it->get()); 
+//           it = activePowerUps.erase(it); 
+//       } else {
+//           ++it;
+//       }
+//   }
 
-  // Update power-up durations and remove expired ones
-  for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
-      if (currentTime - it->get()->GetSpawnTime() >= POWERUP_DURATION) { // Use the getter
-//           DeactivatePowerUp(*it->get());
-          std::cout << "Removing expired power-up!" << std::endl;
-          it = activePowerUps.erase(it);
-      } else {
-          ++it;
-      }
-  }
+//   // Update power-up durations and remove expired ones
+//   for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
+//       if (currentTime - it->get()->GetSpawnTime() >= POWERUP_DURATION) { // Use the getter
+// //           DeactivatePowerUp(*it->get());
+//           std::cout << "Removing expired power-up!" << std::endl;
+//           it = activePowerUps.erase(it);
+//       } else {
+//           ++it;
+//       }
+//   }
 
   /*
   // Handle score multiplier duration
@@ -136,6 +136,28 @@ void Game::Update() {
       lastPowerUpSpawnTime = currentTime; 
   }
 
+    // Update power-up durations, check for collisions, and remove 
+    for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
+        bool powerUpConsumed = false; // Flag to track if power-up was consumed
+
+        // Check for collision
+        if (it->get()->position.x == new_x && it->get()->position.y == new_y) {
+            ActivatePowerUp(*it->get());
+            powerUpConsumed = true; 
+        } 
+        // Check for expiration (only if not consumed by collision)
+        else if (currentTime - it->get()->GetSpawnTime() >= POWERUP_DURATION) {
+            std::cout << "Removing expired power-up!" << std::endl;
+            powerUpConsumed = true;
+        }
+
+        // Remove the power-up if consumed
+        if (powerUpConsumed) {
+            it = activePowerUps.erase(it);
+        } else {
+            ++it;
+        }
+    }
   // Try to spawn a new power-up randomly
 //   if (rand() % 100 < POWERUP_SPAWN_CHANCE) {
 //     SpawnPowerUp();
@@ -173,7 +195,7 @@ void Game::ActivatePowerUp(const PowerUp& powerUp) {
             std::cout << "Slow Down activated!" << std::endl;
             break;
         case PowerUpType::CONFUSION:
-            snake.isConfused = true; // Activate confusion
+        	ActivateConfusion(); // Call the confusion activation function
             std::cout << "Confusion activated!" << std::endl;
             break;
     }
@@ -190,10 +212,23 @@ void Game::DeactivatePowerUp(const PowerUp& powerUp) {
             std::cout << "Slow Down deactivated!" << std::endl;
             break;
         case PowerUpType::CONFUSION:
-            snake.isConfused = false; // Deactivate confusion
+            snake.isConfused = false; // Activate confusion
             std::cout << "Confusion deactivated!" << std::endl;
             break;
     }
+}
+
+void Game::ActivateConfusion() {
+  snake.isConfused = !snake.isConfused; // Toggle confusion state
+  if (snake.isConfused && snake.size > 1) {
+    int tempX = static_cast<int>(snake.head_x); // Store the casted value in a temporary variable
+    snake.head_x = snake.body.back().x;         // Assign the tail's x to the head
+    snake.body.back().x = tempX;                // Assign the temporary (original head's x) to the tail
+
+    int tempY = static_cast<int>(snake.head_y); // Do the same for the y-coordinate
+    snake.head_y = snake.body.back().y;
+    snake.body.back().y = tempY;
+  }
 }
 
 bool Game::PowerUpExistsAt(int x, int y) {

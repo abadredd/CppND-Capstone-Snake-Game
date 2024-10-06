@@ -30,7 +30,7 @@ class Game {
   // Ali Added
   std::vector<std::unique_ptr<PowerUp>> activePowerUps;
   const int POWERUP_SPAWN_CHANCE = 0.7; // 5% chance per frame
-  const int POWERUP_SPAWN_INTERVAL = 5000; // 5 seconds in milliseconds
+  const int POWERUP_SPAWN_INTERVAL = 12000; // 5 seconds in milliseconds
   const int POWERUP_DURATION = 10000;      // 3 seconds in milliseconds
   Uint32 lastPowerUpSpawnTime = 0;
   
@@ -48,6 +48,7 @@ class Game {
   void ActivatePowerUp(const PowerUp& powerUp);
   void DeactivatePowerUp(const PowerUp& powerUp);
   bool PowerUpExistsAt(int x, int y);
+  void ActivateConfusion();
 };
 
 #endif
