@@ -1,46 +1,104 @@
-# CPPND: Capstone Snake Game Example
+# Ali's C++ Snake Game with Power-Ups
 
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+This project is an enhanced version of the classic Snake game, implemented in C++ using SDL. It introduces three exciting power-ups to make the gameplay more challenging and engaging.
 
-<img src="snake_game.gif"/>
+## New Features
 
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
+The following power-ups have been added to the game:
 
-In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
+1.  **Speed Boost:** Increases the snake's speed for a short duration.
+2.  **Slow Down:** Decreases the snake's speed for a short duration.
+3.  **Tunnel:** Allows the snake to pass through itself for a short duration.
 
-## Dependencies for Running Locally
-* cmake >= 3.7
-  * All OSes: [click here for installation instructions](https://cmake.org/install/)
-* make >= 4.1 (Linux, Mac), 3.81 (Windows)
-  * Linux: make is installed by default on most Linux distros
-  * Mac: [install Xcode command line tools to get make](https://developer.apple.com/xcode/features/)
-  * Windows: [Click here for installation instructions](http://gnuwin32.sourceforge.net/packages/make.htm)
-* SDL2 >= 2.0
-  * All installation instructions can be found [here](https://wiki.libsdl.org/Installation)
-  >Note that for Linux, an `apt` or `apt-get` installation is preferred to building from source. 
-* gcc/g++ >= 5.4
-  * Linux: gcc / g++ is installed by default on most Linux distros
-  * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
-  * Windows: recommend using [MinGW](http://www.mingw.org/)
+## Expected Behavior
 
-## Basic Build Instructions
+*   **Power-up Spawning:** Power-ups spawn randomly on the game board at a fixed time interval.
+*   **Power-up Collection:** When the snake's head collides with a power-up, the corresponding effect is activated.
+*   **Power-up Duration:** Each power-up has a fixed duration, after which its effect is deactivated.
+*   **Visual Feedback:** The snake's head changes color when the tunnel effect is active.
 
-1. Clone this repo.
-2. Make a build directory in the top level directory: `mkdir build && cd build`
-3. Compile: `cmake .. && make`
-4. Run it: `./SnakeGame`.
+## Building and Running
 
+### Prerequisites
 
-## CC Attribution-ShareAlike 4.0 International
+*   **SDL2:** You need to have SDL2 installed on your system. Here's how you can install it on different platforms:
 
+    *   **Linux:**
+        ```bash
+        sudo apt-get install libsdl2-dev  # Debian/Ubuntu
+        sudo yum install SDL2-devel       # Fedora/CentOS/RHEL
+        ```
+    *   **macOS:**
+        ```bash
+        brew install sdl2
+        ```
+    *   **Windows:**
+        *   Download the SDL2 development libraries from the official website: [https://www.libsdl.org/download-2.0.php](https://www.libsdl.org/download-2.0.php)
+        *   Extract the archive and follow the instructions to set up the include and library paths in your IDE or build system.
 
-Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
+### Build Instructions
 
-This work is licensed under a
-[Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/your-username/your-repo.git](https://github.com/your-username/your-repo.git)
+    ```
+2.  **Navigate to the project directory:**
+    ```bash
+    cd your-repo
+    ```
+3.  **Create a build directory:**
+    ```bash
+    mkdir build
+    cd build
+    ```
+4.  **Generate build files using CMake:**
+    ```bash
+    cmake ..
+    ```
+5.  **Compile the code:**
+    ```bash
+    make
+    ```
+6.  **Run the game:**
+    ```bash
+    ./SnakeGame
+    ```
 
-[![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+## Rubric Points Addressed
 
-[cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
-[cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
-[cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
+This project addresses the following rubric points from the C++ Capstone Project:
+
+### Loops, Functions, I/O
+
+*   **Control Structures:** The power-up system uses conditional checks to determine when to spawn power-ups, detect collisions, and manage their durations.
+    *   Files: `game.cpp`
+    *   Line Numbers: (Provide specific line numbers)
+*   **Functions:** New functions have been created to handle power-up spawning, collision detection, effect activation, and duration management.
+    *   Files: `game.cpp`, `renderer.cpp`
+    *   Line Numbers: (Provide specific line numbers)
+*   **Data Structures:** The `activePowerUps` vector stores the active power-ups.
+    *   Files: `game.h`, `game.cpp`
+    *   Line Numbers: (Provide specific line numbers)
+*   **Immutable Variables:** Constant variables define the power-up spawn interval, duration, and other parameters.
+    *   Files: `game.h`
+    *   Line Numbers: (Provide specific line numbers)
+
+### Object-Oriented Programming
+
+*   **Classes:** The `PowerUp` class represents the different types of power-ups.
+    *   Files: `powerup.h`, `powerup.cpp`
+*   **Access Specifiers:** The `PowerUp` class uses appropriate access specifiers.
+    *   Files: `powerup.h`
+*   **Constructors & Initialization Lists:** The `PowerUp` constructor uses initialization lists.
+    *   Files: `powerup.h`
+
+### Memory Management
+
+*   **Smart Pointers:** `std::unique_ptr` is used to manage the memory of dynamically created `PowerUp` objects.
+    *   Files: `game.h`, `game.cpp`
+    *   Line Numbers: (Provide specific line numbers)
+*   **Move Semantics:** The `Game` class implements move semantics (move constructor and move assignment operator) to efficiently transfer resources.
+    *   Files: `game.h`
+    *   Line Numbers: (Provide specific line numbers)
+
+**Note:** Replace `your-username` and `your-repo` with your actual GitHub username and repository name. Also, remember to fill in the specific line numbers for the rubric points addressed in the code.
