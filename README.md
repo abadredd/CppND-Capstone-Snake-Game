@@ -94,6 +94,6 @@ This project addresses the following rubric points from the C++ Capstone Project
 
 ### Memory Management
 
-*   **Smart Pointers:** `std::unique_ptr` is used to manage the memory of dynamically created `PowerUp` objects (line 17 in `game.h`, line 24 in `game.cpp`).
+*   **Smart Pointers:** `std::unique_ptr` is used to manage the memory of dynamically created `PowerUp` objects (line 17 in `game.h`, line 107, 118, 143, 193 in `game.cpp`).
     *   Files: `game.h`, `game.cpp`
 
