@@ -40,7 +40,7 @@ The following power-ups have been added to the game:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/your-repo.git](https://github.com/your-username/your-repo.git)
+    git clone [https://github.com/abadredd/CppND-Capstone-Snake-Game.git]([https://github.com/your-username/your-repo.git](https://github.com/abadredd/CppND-Capstone-Snake-Game.git))
     ```
 2.  **Navigate to the project directory:**
     ```bash
@@ -70,35 +70,29 @@ This project addresses the following rubric points from the C++ Capstone Project
 
 ### Loops, Functions, I/O
 
-*   **Control Structures:** The power-up system uses conditional checks to determine when to spawn power-ups, detect collisions, and manage their durations.
+*   **Control Structures:** The power-up system uses conditional checks (`if`, `else if`, `switch`) to determine when to spawn power-ups (lines 113-117 in `game.cpp`), detect collisions (lines 122-139 in `game.cpp`), and manage their durations (lines 122-139 in `game.cpp`). It also uses loops (`for`) to iterate through the `activePowerUps` vector (lines 120-139 in `game.cpp`).
     *   Files: `game.cpp`
-    *   Line Numbers: (Provide specific line numbers)
-*   **Functions:** New functions have been created to handle power-up spawning, collision detection, effect activation, and duration management.
+*   **Functions:** New functions have been created to handle power-up spawning (`SpawnPowerUp`, lines 141-153 in `game.cpp`), collision detection (within `Update`, lines 122-139 in `game.cpp`), effect activation (`ActivatePowerUp`, lines 155-168 in `game.cpp`), and duration management (within `Update`, lines 122-139 in `game.cpp`). The `Renderer` class provides functions for rendering game elements (`Render`, lines 59-97 in `renderer.cpp`) and updating the window title (`UpdateWindowTitle`, lines 99-102 in `renderer.cpp`).
     *   Files: `game.cpp`, `renderer.cpp`
-    *   Line Numbers: (Provide specific line numbers)
-*   **Data Structures:** The `activePowerUps` vector stores the active power-ups.
+*   **Data Structures:** The `activePowerUps` vector (line 17 in `game.h`) stores the active power-ups.
     *   Files: `game.h`, `game.cpp`
-    *   Line Numbers: (Provide specific line numbers)
-*   **Immutable Variables:** Constant variables define the power-up spawn interval, duration, and other parameters.
+*   **Immutable Variables:** Constant variables define the power-up spawn interval (`POWERUP_SPAWN_INTERVAL`, line 19 in `game.h`) and duration (`POWERUP_DURATION`, line 20 in `game.h`).
     *   Files: `game.h`
-    *   Line Numbers: (Provide specific line numbers)
 
 ### Object-Oriented Programming
 
-*   **Classes:** The `PowerUp` class represents the different types of power-ups.
-    *   Files: `powerup.h`, `powerup.cpp`
-*   **Access Specifiers:** The `PowerUp` class uses appropriate access specifiers.
-    *   Files: `powerup.h`
-*   **Constructors & Initialization Lists:** The `PowerUp` constructor uses initialization lists.
-    *   Files: `powerup.h`
+*   **Classes:** The `PowerUp` class represents the different types of power-ups. The `Game` class manages the game logic and interacts with other classes like `Snake`, `Controller`, and `Renderer`. The `Renderer` class encapsulates the rendering logic using SDL.
+    *   Files: `powerup.h`, `powerup.cpp`, `game.h`, `game.cpp`, `renderer.h`, `renderer.cpp`
+*   **Access Specifiers:** The `PowerUp` and `Game` classes use appropriate access specifiers (`public`, `private`) to control member visibility (e.g., lines 14-15 and 22-38 in `game.h`). The `Renderer` class uses appropriate access specifiers (`public`, `private`) to control member visibility.
+    *   Files: `powerup.h`, `game.h`, `renderer.h`
+*   **Constructors & Initialization Lists:** The `PowerUp` constructor uses initialization lists. The `Renderer` constructor uses initialization lists to initialize member variables (lines 20-25 in `renderer.cpp`).
+    *   Files: `powerup.h`, `renderer.cpp`
+*   **Destructor:** The `Renderer` class has a destructor to clean up SDL resources (lines 55-57 in `renderer.cpp`).
+    *   Files: `renderer.cpp`
 
 ### Memory Management
 
-*   **Smart Pointers:** `std::unique_ptr` is used to manage the memory of dynamically created `PowerUp` objects.
+*   **Smart Pointers:** `std::unique_ptr` is used to manage the memory of dynamically created `PowerUp` objects (line 17 in `game.h`, line 153 in `game.cpp`).
     *   Files: `game.h`, `game.cpp`
-    *   Line Numbers: (Provide specific line numbers)
 *   **Move Semantics:** The `Game` class implements move semantics (move constructor and move assignment operator) to efficiently transfer resources.
     *   Files: `game.h`
-    *   Line Numbers: (Provide specific line numbers)
-
-**Note:** Replace `your-username` and `your-repo` with your actual GitHub username and repository name. Also, remember to fill in the specific line numbers for the rubric points addressed in the code.
