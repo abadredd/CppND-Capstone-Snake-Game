@@ -136,25 +136,31 @@ void Game::Update() {
       lastPowerUpSpawnTime = currentTime; 
   }
 
+  // Update power-up durations, check for collisions, and remove 
+    // Update power-up durations, check for collisions, and remove 
     // Update power-up durations, check for collisions, and remove 
     for (auto it = activePowerUps.begin(); it != activePowerUps.end(); ) {
-        bool powerUpConsumed = false; // Flag to track if power-up was consumed
+        bool powerUpConsumed = false; 
 
         // Check for collision
         if (it->get()->position.x == new_x && it->get()->position.y == new_y) {
             ActivatePowerUp(*it->get());
             powerUpConsumed = true; 
+            it = activePowerUps.erase(it); // Remove the power-up immediately after collision
         } 
         // Check for expiration (only if not consumed by collision)
         else if (currentTime - it->get()->GetSpawnTime() >= POWERUP_DURATION) {
-            std::cout << "Removing expired power-up!" << std::endl;
-            powerUpConsumed = true;
-        }
-
-        // Remove the power-up if consumed
-        if (powerUpConsumed) {
+            // Deactivate ONLY if it's a TUNNEL power-up
+            if (it->get()->type == PowerUpType::TUNNEL) { 
+                DeactivatePowerUp(*it->get());
+                std::cout << "Deactivating and removing expired TUNNEL power-up!" << std::endl;
+            } else {
+                std::cout << "Removing expired power-up!" << std::endl;
+            }
             it = activePowerUps.erase(it);
-        } else {
+        } 
+        // If not consumed and not expired, move to the next power-up
+        else {
             ++it;
         }
     }
@@ -187,49 +193,96 @@ void Game::SpawnPowerUp() {
 void Game::ActivatePowerUp(const PowerUp& powerUp) {
     switch (powerUp.type) {
         case PowerUpType::SPEED_BOOST:
-            snake.speed += 0.5; // Increase speed temporarily
+            snake.speed *= 1.5; // Increase speed temporarily
             std::cout << "Speed Boost activated!" << std::endl;
             break;
         case PowerUpType::SLOW_DOWN:
-            snake.speed -= 0.5; // Decrease speed temporarily
+            snake.speed *= 0.5; // Decrease speed temporarily
             std::cout << "Slow Down activated!" << std::endl;
             break;
-        case PowerUpType::CONFUSION:
-        	ActivateConfusion(); // Call the confusion activation function
-            std::cout << "Confusion activated!" << std::endl;
+       case PowerUpType::TUNNEL:
+            snake.isTunneling = true;
+            std::cout << "Tunnel activated!" << std::endl;
             break;
+//        case PowerUpType::REVERSE:
+//             snake.direction = ReverseDirection(snake.direction); // Reverse direction
+//             std::cout << "Reverse activated!" << std::endl;
+//             break;
+//         case PowerUpType::CONFUSION:
+//         	ActivateConfusion(); // Call the confusion activation function
+//             std::cout << "Confusion activated!" << std::endl;
+//             break;
     }
 }
 
 void Game::DeactivatePowerUp(const PowerUp& powerUp) {
     switch (powerUp.type) {
         case PowerUpType::SPEED_BOOST:
-            snake.speed -= 0.5; // Reset speed
+            snake.speed /= 1.5; // Reset speed
             std::cout << "Speed Boost deactivated!" << std::endl;
             break;
         case PowerUpType::SLOW_DOWN:
-            snake.speed += 0.5; // Reset speed
+            snake.speed /= 0.5; // Reset speed
             std::cout << "Slow Down deactivated!" << std::endl;
             break;
-        case PowerUpType::CONFUSION:
-            snake.isConfused = false; // Activate confusion
-            std::cout << "Confusion deactivated!" << std::endl;
+        case PowerUpType::TUNNEL:
+            snake.isTunneling = false;
+            std::cout << "Tunnel deactivated!" << std::endl;
             break;
     }
 }
+//         case PowerUpType::REVERSE: {
+//             // Store the original head position
+//             int originalHeadX = snake.head_x;
+//             int originalHeadY = snake.head_y;
 
-void Game::ActivateConfusion() {
-  snake.isConfused = !snake.isConfused; // Toggle confusion state
-  if (snake.isConfused && snake.size > 1) {
-    int tempX = static_cast<int>(snake.head_x); // Store the casted value in a temporary variable
-    snake.head_x = snake.body.back().x;         // Assign the tail's x to the head
-    snake.body.back().x = tempX;                // Assign the temporary (original head's x) to the tail
+//             // Reverse the snake's direction
+//             snake.direction = ReverseDirection(snake.direction);
 
-    int tempY = static_cast<int>(snake.head_y); // Do the same for the y-coordinate
-    snake.head_y = snake.body.back().y;
-    snake.body.back().y = tempY;
-  }
-}
+//             // Move the head one step in the new direction to avoid self-collision
+//             snake.UpdateHead(); 
+
+//             // Restore the original head position to prevent "teleportation"
+//             snake.head_x = originalHeadX;
+//             snake.head_y = originalHeadY;
+
+//             std::cout << "Reverse activated!" << std::endl;
+//             break;
+       
+//         case PowerUpType::CONFUSION:
+//             snake.isConfused = false; // Activate confusion
+//             std::cout << "Confusion deactivated!" << std::endl;
+//             break;
+   // }
+
+// Snake::Direction Game::ReverseDirection(Snake::Direction dir) {
+//     switch (dir) {
+//         case Snake::Direction::kUp:
+//             return Snake::Direction::kDown;
+//         case Snake::Direction::kDown:
+//             return Snake::Direction::kUp;
+//         case Snake::Direction::kLeft:
+//             return Snake::Direction::kRight;
+//         case Snake::Direction::kRight:
+//             return Snake::Direction::kLeft;
+//     }
+//     return dir; // Should not happen, but handle it for completeness
+// }
+
+// void Game::ActivateConfusion() {
+//     snake.isConfused = !snake.isConfused; // Toggle confusion state
+//     if (snake.isConfused && snake.size > 1) {
+//         // ... (your existing swapping logic for the snake's body)
+
+//         // Swap the head and tail positions using temporary variables
+//         int headX = static_cast<int>(snake.head_x);
+//         int headY = static_cast<int>(snake.head_y);
+//         std::swap(headX, snake.body.back().x);
+//         std::swap(headY, snake.body.back().y);
+//         snake.head_x = headX; // Update the snake's head_x
+//         snake.head_y = headY; // Update the snake's head_y
+//     }
+// }
 
 bool Game::PowerUpExistsAt(int x, int y) {
     for (const auto& powerUp : activePowerUps) {

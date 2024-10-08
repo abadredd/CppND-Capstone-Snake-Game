@@ -11,7 +11,7 @@ void Renderer::RenderPowerUp(const PowerUp& powerUp) {
     case PowerUpType::SLOW_DOWN:
       SDL_SetRenderDrawColor(sdl_renderer, 255, 0, 0, 255); // Red
       break;
-    case PowerUpType::CONFUSION:
+    case PowerUpType::TUNNEL:
       SDL_SetRenderDrawColor(sdl_renderer, 128, 0, 128, 255); // Purple
       break;
   }
@@ -90,7 +90,11 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   block.x = static_cast<int>(snake.head_x) * block.w;
   block.y = static_cast<int>(snake.head_y) * block.h;
   if (snake.alive) {
-    SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
+    if (snake.isTunneling) {
+      SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xA5, 0x00, 0xFF); // Orange (or your preferred color)
+    } else {
+      SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF); // Original head color
+    }
   } else {
     SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
   }

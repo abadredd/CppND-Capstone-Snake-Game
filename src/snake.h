@@ -9,6 +9,8 @@ class Snake {
   enum class Direction { kUp, kDown, kLeft, kRight };
   
   bool isConfused = false;
+  bool isTunneling = false; // Add this line
+
 
   Snake(int grid_width, int grid_height)
       : grid_width(grid_width),

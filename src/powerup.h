@@ -10,7 +10,9 @@
 enum class PowerUpType {
     SPEED_BOOST,
     SLOW_DOWN, // Renamed from INVINCIBILITY
-    CONFUSION 
+    TUNNEL
+//     REVERSE
+//     CONFUSION 
 };
 
 class PowerUp {
