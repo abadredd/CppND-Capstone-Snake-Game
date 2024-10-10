@@ -96,4 +96,10 @@ This project addresses the following rubric points from the C++ Capstone Project
 
 *   **Smart Pointers:** `std::unique_ptr` is used to manage the memory of dynamically created `PowerUp` objects (line 17 in `game.h`, line 107, 118, 143, 193 in `game.cpp`).
     *   Files: `game.h`, `game.cpp`
+*   **Rule of 5:** The `Game` class implements the Rule of 5 by defining a destructor, copy constructor, copy assignment operator, move constructor, and move assignment operator. This ensures proper resource management, especially when transferring ownership of the `activePowerUps` vector, which contains `std::unique_ptr` elements.
+    *   Files: `game.h`
+*   **References:** The project uses references in function declarations to avoid unnecessary copying of objects. For example, the `Controller::HandleInput` function takes the `Snake` object by reference (`Snake&`) instead of by value. The `Renderer` constructor and `Render` function take the `Game` object by reference (`Game&`) to access the `activePowerUps` vector.
+    *   Files: `controller.h`, `renderer.h`, `game.h`, `renderer.cpp` 
+*   **Move Semantics:** The `Game` class implements move semantics (move constructor and move assignment operator) to efficiently transfer resources, especially the `activePowerUps` vector. This avoids unnecessary copying of `std::unique_ptr` elements when a `Game` object is moved.
+    *   Files: `game.h`
 
