@@ -12,8 +12,12 @@ project(SDL2Test)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 find_package(SDL2 REQUIRED)
+find_package(Threads REQUIRED)  # Add this to find the Threads library
+
 include_directories(${SDL2_INCLUDE_DIRS} src)
 
 add_executable(SnakeGame src/main.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp)
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
-target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
+# Link with both SDL2 and Threads libraries
+target_link_libraries(SnakeGame ${SDL2_LIBRARIES} Threads::Threads) 
+

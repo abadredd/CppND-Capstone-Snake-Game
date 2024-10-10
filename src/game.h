@@ -13,9 +13,17 @@ class Renderer; // Forward declaration of the Renderer class
 #include <vector>
 #include <memory> // For smart pointers
 
+#include <mutex>   // For std::mutex
+#include <condition_variable> // For std::condition_variable
+#include <thread>  // For std::thread
+
 class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height);
+  Game(Game&& other) noexcept; // Move constructor
+  Game& operator=(Game&& other) noexcept; // Move assignment operator
+  ~Game(); // Declare the destructor explicitly
+
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;
@@ -45,11 +53,22 @@ class Game {
   void Update();
   
   void SpawnPowerUp();
-  void ActivatePowerUp(const PowerUp& powerUp);
-  void DeactivatePowerUp(const PowerUp& powerUp);
+  void ActivatePowerUp(const PowerUp& powerUp);  // Pass PowerUp by reference
+  void DeactivatePowerUp(const PowerUp& powerUp); // Pass PowerUp by reference
+
   bool PowerUpExistsAt(int x, int y);
-//   void ActivateConfusion();
+  //   void ActivateConfusion();
   Snake::Direction ReverseDirection(Snake::Direction dir);
+  
+  // Multithreading members
+  std::mutex powerUpMutex;
+  std::condition_variable powerUpCV;
+  std::thread powerUpThread;
+  bool powerUpThreadRunning;
+
+  void PowerUpSpawnerThread();
+
+
 };
 
 #endif

@@ -23,6 +23,14 @@ game.h
 /home/workspace/CppND-Capstone-Snake-Game/src/game.h
 renderer.h
 /home/workspace/CppND-Capstone-Snake-Game/src/renderer.h
+thread
+-
+chrono
+-
+mutex
+-
+condition_variable
+-
 
 /home/workspace/CppND-Capstone-Snake-Game/src/game.h
 random
@@ -40,6 +48,12 @@ snake.h
 vector
 -
 memory
+-
+mutex
+-
+condition_variable
+-
+thread
 -
 
 /home/workspace/CppND-Capstone-Snake-Game/src/powerup.h
