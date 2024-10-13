@@ -126,8 +126,6 @@ void Game::Update()
     std::unique_lock<std::mutex> lock(powerUpMutex); // Use unique_lock instead of lock_guard
 
     // Condition variable logic 
-    powerUpCV.wait(lock, [this]() { return !activePowerUps.empty(); }); 
-
     // Update power-up durations, check for collisions, and remove
     // Update power-up durations, check for collisions, and remove
     // Update power-up durations, check for collisions, and remove
