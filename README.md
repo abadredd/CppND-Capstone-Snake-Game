@@ -103,3 +103,12 @@ This project addresses the following rubric points from the C++ Capstone Project
 *   **Move Semantics:** The `Game` class implements move semantics (move constructor and move assignment operator) to efficiently transfer resources, especially the `activePowerUps` vector. This avoids unnecessary copying of `std::unique_ptr` elements when a `Game` object is moved.
     *   Files: `game.h`
 
+### Concurrency
+
+*   **Multithreading:** The project uses multithreading to spawn power-ups in a separate thread (`powerUpThread`) concurrently with the main game loop. This improves performance by offloading the power-up spawning task to a background thread.
+    *   Files: `game.h`, `game.cpp`
+*   **Mutex:** A mutex (`powerUpMutex`) is used to synchronize access to the `activePowerUps` vector, which is shared between the main thread and the power-up spawner thread. This prevents race conditions and ensures thread safety.
+    *   Files: `game.h`, `game.cpp`
+*   **Condition Variable:** A condition variable (`powerUpCV`) is used to synchronize the execution of the main thread and the power-up spawner thread. The main thread waits for the condition variable to be signaled by the spawner thread when a new power-up is added to the `activePowerUps` vector.
+    *   Files: `game.h`, `game.cpp`
+
